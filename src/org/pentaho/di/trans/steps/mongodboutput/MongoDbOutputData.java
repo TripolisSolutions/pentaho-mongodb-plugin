@@ -46,6 +46,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.MongoException;
 import com.mongodb.util.JSON;
+import org.bson.types.ObjectId;
 
 /**
  * Data class for the MongoDbOutput step
@@ -152,7 +153,7 @@ public class MongoDbOutputData extends BaseStepData implements StepDataInterface
     for ( MongoDbOutputMeta.MongoField f : fields ) {
       m_userFields.add( f.copy() );
     }
-  }
+   }
 
   /**
    * Initialize field paths
@@ -797,14 +798,22 @@ public class MongoDbOutputData extends BaseStepData implements StepDataInterface
     if ( kettleType.isNull( kettleValue ) ) {
       return false; // don't insert nulls!
     }
+    
 
     if ( kettleType.isString() ) {
       String val = kettleType.getString( kettleValue );
-      if ( kettleValueIsJSON ) {
-        Object mongoO = JSON.parse( val );
-        mongoObject.put( lookup.toString(), mongoO );
-      } else {
-        mongoObject.put( lookup.toString(), val );
+      //TODO: "ObjectId:sdafsafdas3555efaf
+      if (val.indexOf("ObjectId") != -1) {
+    	  mongoObject.put( lookup.toString(), new ObjectId(val.substring(9)) );
+      } 
+      else 
+      {
+	      if ( kettleValueIsJSON ) {
+	        Object mongoO = JSON.parse( val );
+	        mongoObject.put( lookup.toString(), mongoO );
+	      } else {
+	        mongoObject.put( lookup.toString(), val );
+	      }
       }
       return true;
     }
