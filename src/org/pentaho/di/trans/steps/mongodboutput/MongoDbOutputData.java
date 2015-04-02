@@ -153,7 +153,7 @@ public class MongoDbOutputData extends BaseStepData implements StepDataInterface
     for ( MongoDbOutputMeta.MongoField f : fields ) {
       m_userFields.add( f.copy() );
     }
-   }
+  }
 
   /**
    * Initialize field paths
@@ -798,11 +798,10 @@ public class MongoDbOutputData extends BaseStepData implements StepDataInterface
     if ( kettleType.isNull( kettleValue ) ) {
       return false; // don't insert nulls!
     }
-    
 
     if ( kettleType.isString() ) {
       String val = kettleType.getString( kettleValue );
-      //TODO: "ObjectId:sdafsafdas3555efaf
+    //TODO: "ObjectId:sdafsafdas3555efaf
       if (val.indexOf("ObjectId") != -1) {
     	  mongoObject.put( lookup.toString(), new ObjectId(val.substring(9)) );
       } 
@@ -815,6 +814,13 @@ public class MongoDbOutputData extends BaseStepData implements StepDataInterface
 	        mongoObject.put( lookup.toString(), val );
 	      }
       }
+//
+//      if ( kettleValueIsJSON ) {
+//        Object mongoO = JSON.parse( val );
+//        mongoObject.put( lookup.toString(), mongoO );
+//      } else {
+//        mongoObject.put( lookup.toString(), val );
+//      }
       return true;
     }
     if ( kettleType.isBoolean() ) {
