@@ -801,10 +801,11 @@ public class MongoDbOutputData extends BaseStepData implements StepDataInterface
 
     if ( kettleType.isString() ) {
       String val = kettleType.getString( kettleValue );
-    //TODO: "ObjectId:sdafsafdas3555efaf
+      //TODO:  Thanh added the process for ObjectId , format : "ObjectId:sdafsafdas3555efaf
       if (val.indexOf("ObjectId") != -1) {
     	  mongoObject.put( lookup.toString(), new ObjectId(val.substring(9)) );
       } 
+
       else 
       {
 	      if ( kettleValueIsJSON ) {
@@ -813,6 +814,7 @@ public class MongoDbOutputData extends BaseStepData implements StepDataInterface
 	      } else {
 	        mongoObject.put( lookup.toString(), val );
 	      }
+      //TODO: End added   
       }
 //
 //      if ( kettleValueIsJSON ) {
